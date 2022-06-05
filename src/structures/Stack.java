@@ -1,5 +1,7 @@
 package structures;
 
+import java.util.List;
+
 import contracts.StackInterface;
 
 public class Stack<Type> implements StackInterface<Type> {
@@ -31,7 +33,7 @@ public class Stack<Type> implements StackInterface<Type> {
         this.list.show();
     }
     
-    public Object[] toArray() {
+    public List<Type> toArray() {
         return this.list.toArray();
     }
 }
