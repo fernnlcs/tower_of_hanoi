@@ -1,6 +1,10 @@
 package structures;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import contracts.ListInterface;
+import utils.StructureException;
 
 public class DoubleLinkedList<Type> implements ListInterface<Type> {
 
@@ -26,7 +30,7 @@ public class DoubleLinkedList<Type> implements ListInterface<Type> {
     }
     
     @Override
-    public void addFirst(Type value) {
+    public int addFirst(Type value) {
         Node oldHead = this.head;
         Node newHead = new Node(value);
 
@@ -43,10 +47,12 @@ public class DoubleLinkedList<Type> implements ListInterface<Type> {
 
         // Incrementar tamanho
         this.size += 1;
+
+        return newHead.id;
     }
 
     @Override
-    public void addLast(Type value) {
+    public int addLast(Type value) {
         Node oldTail = this.tail;
         Node newTail = new Node(value);
 
@@ -63,15 +69,16 @@ public class DoubleLinkedList<Type> implements ListInterface<Type> {
 
         // Incrementar tamanho
         this.size += 1;
+
+        return newTail.id;
     }
 
     @Override
-    public void addAfter(Type value, int id) {
+    public int addAfter(Type value, int id) {
         Node target = this.searchNode(id);
 
         if (target == null) {
-            System.out.println("Erro: não encontrei o id " + id);
-            return;
+            throw new StructureException("Erro: não encontrei o id " + id);
         }
 
         Node nextAnyway = target.next;
@@ -88,6 +95,8 @@ public class DoubleLinkedList<Type> implements ListInterface<Type> {
         target.next = newNode;
 
         this.size += 1;
+
+        return newNode.id;
     }
 
     @Override
@@ -242,14 +251,11 @@ public class DoubleLinkedList<Type> implements ListInterface<Type> {
         }
     }
     
-    public Object[] toArray() {
-        Object[] result = new Object[this.size];
+    public List<Type> toArray() {
+        List<Type> result = new ArrayList<Type>();
 
-        Node current = this.head;
-
-        for (int i = 0; i < this.size; i++) {
-            result[i] = current.data;
-            current = current.next;
+        for (Node current = this.head; current != null; current = current.next) {
+            result.add(current.data);
         }
 
         return result;

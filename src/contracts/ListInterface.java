@@ -1,9 +1,9 @@
 package contracts;
 
 public interface ListInterface <Type> {
-    void addFirst(Type value);
-    void addLast(Type value);
-    void addAfter(Type value, int id);
+    int addFirst(Type value);
+    int addLast(Type value);
+    int addAfter(Type value, int id);
 
     Type peekFirst();
     Type peekLast();
