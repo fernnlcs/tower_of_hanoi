@@ -146,7 +146,6 @@ public class DoubleLinkedList<Type> implements ListInterface<Type> {
         Node oldHead = this.head;
         
         if (oldHead == null) {
-            System.out.println("Lista vazia. Nada removido.");
             return null;
         }
 
@@ -173,21 +172,19 @@ public class DoubleLinkedList<Type> implements ListInterface<Type> {
         Node oldTail = this.tail;
 
         if (oldTail == null) {
-            System.out.println("Lista vazia. Nada removido.");
             return null;
         }
 
         Node newTail = this.tail.previous;
         this.tail = newTail;
-        
-        newTail.next = null;
 
         if (oldTail == this.head) {
             // Se é o único elemento, a cabeça TAMBÉM recebe o valor nulo
-            // A cauda já recebeu em ''
+            // A cauda já recebeu em 'this.tail = newTail;'
             this.head = null;
-
-            return oldTail.data;
+        } else {
+            newTail.next = null;
+            oldTail.previous = null;
         }
 
         this.size -= 1;
