@@ -178,7 +178,6 @@ public class SinglyLinkedList<Type> implements ListInterface<Type> {
         return oldTail.data;
     }
 
-    
     private Node searchNodeBefore(int id) {
         Node before = null;
         Node current = this.head;
@@ -234,4 +233,16 @@ public class SinglyLinkedList<Type> implements ListInterface<Type> {
         }
     }
     
+    public Object[] toArray() {
+        Object[] result = new Object[this.size];
+
+        Node current = this.head;
+
+        for (int i = 0; i < this.size; i++) {
+            result[i] = current.data;
+            current = current.next;
+        }
+
+        return result;
+    }
 }

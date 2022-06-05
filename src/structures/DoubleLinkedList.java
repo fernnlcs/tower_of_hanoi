@@ -242,4 +242,16 @@ public class DoubleLinkedList<Type> implements ListInterface<Type> {
         }
     }
     
+    public Object[] toArray() {
+        Object[] result = new Object[this.size];
+
+        Node current = this.head;
+
+        for (int i = 0; i < this.size; i++) {
+            result[i] = current.data;
+            current = current.next;
+        }
+
+        return result;
+    }
 }
