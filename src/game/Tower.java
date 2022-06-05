@@ -1,33 +1,39 @@
 package game;
 
-import structures.Stack;
+import java.util.List;
 
-public class Tower<Type> {
+import structures.Stack;
+import utils.GameException;
+
+public class Tower {
     
     public String name;
-    private Stack<Type> elements = new Stack<Type>();
+    private Stack<Integer> elements = new Stack<Integer>();
 
     public Tower(String name) {
         this.name = name;
     }
 
-    public void add(Type value) {
+    public void add(Integer value) {
+        if (!this.elements.isEmpty() || value > this.elements.peek()) {
+            throw new GameException("As peças menores sempre ficam acima das maiores.");
+        }
         this.elements.push(value);
     }
 
-    public Type remove() {
+    public Integer remove() {
         return this.elements.pop();
     }
 
     public void show() {
         System.out.println(name);
-        Object[] list = elements.toArray();
+        List<Integer> list = elements.toArray();
 
         System.out.print("> ");
 
-        for (int i = 0; i < list.length; i++) {
+        for (int i = 0; i < list.size(); i++) {
             System.out.print("[");
-            System.out.print(list[i]);
+            System.out.print(list.get(i));
             System.out.print("]");
         }
 
