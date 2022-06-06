@@ -100,7 +100,9 @@ public class Level {
     }
 
     public void play() {
-        System.out.println("Começamos assim:");
+        System.out.println("Para jogar, escreva o nome da torre que você quer retirar + um espaço + a torre que você quer montar.");
+        System.out.println("Exemplo: para mover da torre A para a torre C, digite \"A C\".\n");
+        System.out.println("Começamos assim:\n");
         this.towers.show();
 
         Scanner entry = new Scanner(System.in);
