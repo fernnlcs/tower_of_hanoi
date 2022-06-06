@@ -25,7 +25,11 @@ public class Stack<Type> implements StackInterface<Type> {
 
     @Override
     public boolean isEmpty() {
-        return (this.list.size == 0);
+        return (this.size() == 0);
+    }
+
+    public int size() {
+        return this.list.size();
     }
 
     @Override

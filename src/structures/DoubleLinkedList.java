@@ -8,10 +8,10 @@ import utils.StructureException;
 
 public class DoubleLinkedList<Type> implements ListInterface<Type> {
 
-    public Node head = null;
-    public Node tail = null;
-    public int nextId = 0;
-    public int size = 0;
+    private Node head = null;
+    private Node tail = null;
+    private int nextId = 0;
+    private int size = 0;
 
     /**
      * Node
@@ -211,6 +211,10 @@ public class DoubleLinkedList<Type> implements ListInterface<Type> {
         this.size -= 1;
 
         return removable.data;
+    }
+
+    public int size() {
+        return this.size;
     }
 
     @Override

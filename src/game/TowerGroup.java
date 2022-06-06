@@ -22,7 +22,7 @@ public class TowerGroup {
 
     private SinglyLinkedList<Tower> list = new SinglyLinkedList<Tower>();
     private List<TowerIndex> dictionary = new ArrayList<TowerIndex>();
-    
+
     public TowerGroup(String[] names) {
         for (int i = 0; i < names.length; i++) {
             try {
@@ -35,28 +35,61 @@ public class TowerGroup {
         }
     }
 
-    public Tower searchByName(String name) {
+    private TowerIndex searchIndexByName(String name) {
         for (int i = 0; i < this.dictionary.size(); i++) {
-            if (this.dictionary.get(i).name == name) {
-                return this.list.search(this.dictionary.get(i).id);
+            if (this.dictionary.get(i).name.equals(name)) {
+                return this.dictionary.get(i);
             }
         }
 
-        throw new GameException("Não encontrei a torre " + name);
+        return null;
+    }
+
+    public Tower searchByName(String name) {
+        TowerIndex index = this.searchIndexByName(name);
+
+        if (index == null) {
+            throw new GameException("Não encontrei a torre " + name);
+        }
+
+        Tower result = this.list.search(index.id);
+
+        if (result == null) {
+            throw new GameException("Não encontrei a torre " + name);
+        }
+
+        return result;
     }
 
     public void show() {
         List<Tower> towers = list.toArray();
 
         for (int i = 0; i < towers.size(); i++) {
-            towers.get(i).show();
+            towers.get(i).show2();
         }
     }
 
-    public void move(String from, String to) {
+    public void replace(String name, Tower tower) {
+        TowerIndex byeIndex = this.searchIndexByName(name);
+        int newId = this.list.addAfter(tower, byeIndex.id);
+
+        this.list.remove(byeIndex.id);
+
+        dictionary.remove(byeIndex);
+        dictionary.add(new TowerIndex(newId, name));
+    }
+
+    public void move(String from, String to) throws GameException {
         Tower fromTower = this.searchByName(from);
         Tower toTower = this.searchByName(to);
 
-        toTower.add(fromTower.remove());
+        if (fromTower.isEmpty()) {
+            throw new GameException("A torre " + fromTower.name + " está vazia.");
+        }
+
+        Integer moving = fromTower.peek();
+
+        toTower.add(moving);
+        fromTower.remove();
     }
 }
