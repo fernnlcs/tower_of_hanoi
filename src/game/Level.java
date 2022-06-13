@@ -19,14 +19,15 @@ public class Level {
     private final int perfectMoves;
     private int moves = 0;
     private int undoneMoves = 0;
+    private Score score;
 
     public Level(TowerGroup towers, Tower origin, String destiny) {
         this.towers = towers;
         this.origin = origin;
         this.destiny = destiny;
 
-        int blocksNumber = origin.toString().length();
-        this.perfectMoves = (int) Math.pow(2, blocksNumber);
+        int blocksNumber = origin.toArray().size();
+        this.perfectMoves = (int) Math.pow(2, blocksNumber) - 1;
 
         try {
             towers.searchByName(destiny);
@@ -108,13 +109,18 @@ public class Level {
         }
     }
 
-    public void play() {
+    public Score play() {
+        return this.play("Anonymous");
+    }
+
+    public Score play(String player) {
         System.out.println(
                 "Para jogar, escreva o nome da torre que você quer retirar + um espaço + a torre que você quer montar.");
         System.out.println("Exemplo: para mover da torre A para a torre C, digite \"A C\".\n");
         System.out.println("Começamos assim:\n");
         this.towers.show();
 
+        this.score = new Score(player, 0);
         Scanner entry = new Scanner(System.in);
 
         while (!this.checkAnswer()) {
@@ -135,7 +141,7 @@ public class Level {
                 switch (command) {
                     case "q":
                         entry.close();
-                        return;
+                        return new Score(player, 0);
 
                     case "z":
                         this.undo();
@@ -173,6 +179,10 @@ public class Level {
             System.out.println("------------------------");
         }
 
+        Double ratio = ((double) this.perfectMoves) / (this.moves);
+        this.score.setNumber(ratio * 100);
+
+        return this.score;
     }
 
     public static Level read(String fileName) {
@@ -197,7 +207,7 @@ public class Level {
             String destiny = originAndDestinyString.split(",")[1].trim();
 
             Tower origin = new Tower(originAndDestinyString.split(",")[0].trim());
-            
+
             for (int i = 0; i < originItems.length; i++) {
                 String stringToNumber = originItems[i];
                 int item = Integer.parseInt(stringToNumber.trim());

@@ -133,4 +133,8 @@ public class Tower {
 
         return true;
     }
+
+    public List<Integer> toArray() {
+        return this.elements.toArray();
+    }
 }
