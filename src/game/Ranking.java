@@ -37,19 +37,43 @@ public class Ranking {
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
             String[] lineItems = line.split(" -> ");
-            
+
             Double number = Double.parseDouble(lineItems[0]);
             String player = lineItems[1];
 
             Score score = new Score(player, number);
-            scoreList.addLast(score);
+            this.addScore(score);
         }
-        
+
         scanner.close();
     }
 
     public void addScore(Score score) {
         scoreList.addLast(score);
+
+        Score current = scoreList.peekLast();
+        int j = scoreList.size() - 2;
+
+        while (j >= 0 && scoreList.get(j).getNumber() > current.getNumber()) {
+            scoreList.set(j + 1, scoreList.get(j));
+            j -= 1;
+        }
+        
+        scoreList.set(j + 1, current);
+    }
+
+    public void insertSort() {
+        for (int i = 0; i < scoreList.size(); i++) {
+            Score current = scoreList.get(i);
+
+            int j = i - 1;
+            while (j >= 0 && scoreList.get(j).getNumber() > current.getNumber()) {
+                scoreList.set(j + 1, scoreList.get(j));
+                j -= 1;
+            }
+
+            scoreList.set(j + 1, current);
+        }
     }
 
     public void show() {
@@ -64,7 +88,7 @@ public class Ranking {
         for (int i = 0; i < list.size(); i++) {
             writer.write(list.get(i).toString() + "\n");
         }
-        
+
         writer.close();
     }
 

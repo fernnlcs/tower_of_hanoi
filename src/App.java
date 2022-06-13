@@ -17,6 +17,8 @@ public class App {
 
         ranking.addScore(score);
         ranking.save();
+
+        System.out.println("\n\nRanking atual:");
         ranking.show();
     }
 }

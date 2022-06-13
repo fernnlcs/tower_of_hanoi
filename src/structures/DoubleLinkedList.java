@@ -218,17 +218,31 @@ public class DoubleLinkedList<Type> implements ListInterface<Type> {
     }
 
     public Type get(int index) {
-        if (index > this.size) {
+        if (index > this.size || this.size == 0) {
             throw new StructureException("Não existe um valor no índice " + index + ".");
         }
         
         Node current = this.head;
 
-        for (int i = 0; i < this.size; i++) {
+        for (int i = 0; i < index; i++) {
             current = current.next;
         }
 
         return current.data;
+    }
+    
+    public void set(int index, Type element) {
+        if (index > this.size || this.size == 0) {
+            throw new StructureException("Não existe um valor no índice " + index + ".");
+        }
+        
+        Node current = this.head;
+
+        for (int i = 0; i < index; i++) {
+            current = current.next;
+        }
+
+        current.data = element;
     }
 
     @Override
