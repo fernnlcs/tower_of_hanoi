@@ -1,5 +1,6 @@
 package game;
 
+import java.io.File;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -15,6 +16,7 @@ public class Level {
     private String destiny;
     private Stack<Action> history = new Stack<Action>();
     private Stack<Action> undone = new Stack<Action>();
+    private final int perfectMoves;
     private int moves = 0;
     private int undoneMoves = 0;
 
@@ -23,12 +25,19 @@ public class Level {
         this.origin = origin;
         this.destiny = destiny;
 
+        int blocksNumber = origin.toString().length();
+        this.perfectMoves = (int) Math.pow(2, blocksNumber);
+
         try {
             towers.searchByName(destiny);
             towers.replace(origin.name, origin.clone());
         } catch (GameException e) {
             throw e;
         }
+    }
+
+    public int getPerfectMoves() {
+        return perfectMoves;
     }
 
     public boolean checkAnswer() {
@@ -100,7 +109,8 @@ public class Level {
     }
 
     public void play() {
-        System.out.println("Para jogar, escreva o nome da torre que você quer retirar + um espaço + a torre que você quer montar.");
+        System.out.println(
+                "Para jogar, escreva o nome da torre que você quer retirar + um espaço + a torre que você quer montar.");
         System.out.println("Exemplo: para mover da torre A para a torre C, digite \"A C\".\n");
         System.out.println("Começamos assim:\n");
         this.towers.show();
@@ -165,4 +175,38 @@ public class Level {
 
     }
 
+    public static Level read(String fileName) {
+        try {
+            File file = new File(fileName);
+            Scanner scanner = new Scanner(file);
+
+            String towersString = scanner.nextLine();
+            String originAndDestinyString = scanner.nextLine();
+            String originSetupString = scanner.nextLine();
+
+            scanner.close();
+
+            String[] originItems = originSetupString.split(",");
+            String[] towersArray = towersString.split(",");
+
+            for (int i = 0; i < towersArray.length; i++) {
+                towersArray[i] = towersArray[i].trim();
+            }
+
+            TowerGroup towers = new TowerGroup(towersArray);
+            String destiny = originAndDestinyString.split(",")[1].trim();
+
+            Tower origin = new Tower(originAndDestinyString.split(",")[0].trim());
+            
+            for (int i = 0; i < originItems.length; i++) {
+                String stringToNumber = originItems[i];
+                int item = Integer.parseInt(stringToNumber.trim());
+                origin.add(item);
+            }
+
+            return new Level(towers, origin, destiny);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }
